@@ -8,6 +8,7 @@ This notebook integrates proteomics data with UniProt sequence data, prenylation
 
 
 Workflow Overview
+
 Step 1: Data preparation
 •	Input files required:
 o	[filename].csv - Proteomics peptides file
@@ -18,37 +19,45 @@ o	Removes rows with missing UniProt IDs or end positions
 o	Handles multiple UniProt IDs per peptide (selects first, this is arbitrary)
 o	Filters volcano plot data for significantly enriched proteins only (marked with "+")
 o	Excludes known bonafide prenylated proteins to focus on novel candidates
+
 Step 2: Sequence Retrieval from UniProt
 •	Submits significantly enriched proteins to UniProt ID mapping API
 •	Retrieves protein sequences in FASTA format
 •	Saves results to {filename}_{prenyldata_file}_uniprot_results.fasta
 •	Uses Job ID polling system to monitor batch request completion
+
 Step 3: Tryptic Cleavage Site Mapping
 •	Extracts end positions of all tryptic cleavage sites for each protein
 •	Identifies the last tryptic cleavage site for each protein
 •	This position is used as the reference point for C-terminal prenylation detection
+
 Step 4: CaaX Box Detection
 •	Generates all possible combinations of CaaX motifs 
 •	Scans protein sequences downstream of the last tryptic cleavage site
 •	Identifies proteins containing CaaX motifs in their C-terminal region
 •	Extracts and trims sequences to include only the region up to and including the CaaX box
+
 Step 5: Sequence Length Normalization
 •	The Prenylation Prediction Suite (PrePS) requires sequences ≥15 amino acids
 •	Pads shorter sequences with lysine residues (KKK...) to meet this requirement
+
 Step 6: Prenylation Scoring
 •	Submits sequences to Prenylation Prediction Suite (PrePS)
 •	PrePS predicts prenylation scores for two enzyme classes: Farnesyltransferase and Geranylgernayltransferase I
 •	Scores range from negative (unlikely) to positive (likely prenylation)
+
 Step 7: Score Filtering
 •	Retains only proteins with at least one prenylation score > -2.0
 •	Removes duplicate entries per protein
 •	Outputs filtered results to {filename}_{prenyldata_file}_CaaX_final.csv
+
 Step 8: N-Terminal Analysis (Optional)
 •	Queries TopFIND database for experimentally identified N-termini
 •	Retrieves C-terminal sequences identified by mass spectrometry
 •	Cross-references TopFIND C-termini with CaaX box regions
 •	Identifies cases where experimentally detected termini match CaaX boxes
 •	Saves results CCBF_final.xlsx
+
 
 Input Files
 File Name, Format,	Description
