@@ -60,17 +60,25 @@ Step 8: N-Terminal Analysis (Optional)
 
 
 Input Files
+
 File Name, Format,	Description
+
 [filename].csv	CSV	Proteomics peptides with protein IDs and end positions
+
 [prenyldate_file].xlsx	XLSX	Volcano plot data; proteins marked with "+" indicate significant enrichment
+
 Total prenylation list -[prenylated_file].csv	CSV	Known prenylated proteins (used for exclusion filtering)
 
 Note: Update file paths in the first code cell to match your local files.
 
 Output Files
+
 File Name, Format,	Description
+
 {filename}_{prenyldata_file}_uniprot_results.fasta	FASTA	Protein sequences retrieved from UniProt
+
 {filename}_{prenyldata_file}_CaaX_final.csv	CSV	Main output - predicted prenylated proteins with scores
+
 [CCBF_final].xlsx	XLSX	N-terminus data from TopFIND for validated proteins
 Main Output Columns (CaaX_final.csv)
 •	Protein IDs - UniProt accession
@@ -106,23 +114,35 @@ Usage
 5.	Check output files - review scores in the final CSV and N-terminal data in Excel
 
 Key Parameters & Thresholds
-Parameter	Value	Purpose
+
+Parameter, Value, Purpose
+
 Prenylation Score Threshold	> -2.0	Minimum score to retain proteins
+
 Minimum Sequence Length	15 aa	PrePS requirement
+
 CaaX Motif Position	C-terminal	After last tryptic cleavage site
+
 Aliphatic Amino Acids	A,G,V,L,M,I + others	Valid 2nd position in CaaX
+
 API Polling Interval	5 seconds	Wait between status checks
+
 TopFIND Request Delay	1 second	Avoid rate limiting
  
 Important Notes
+
 Data Assumptions
 •	UniProt IDs with semicolons - Only the first ID is retained (arbitrary choice)
 •	Multiple CaaX boxes - Proteins can have multiple CaaX motifs, all are reported
 •	Known prenylated proteins - Automatically excluded from analysis to focus on novel candidates
+
 API Rate Limiting
+
 •	The notebook includes delays and polling to handle API rate limits gracefully
 •	Large batch submissions to PrePS and TopFind may take several minutes
+
 Cryptic CaaaX box finder
+
 •	Many instances of CaaaX boxes being prenylated have also been reported. The cryptic CaaaX box finder works exactly as described above expect that the algorithm removes the third aliphatic amino acid residue for scoring purposes.
 
 
